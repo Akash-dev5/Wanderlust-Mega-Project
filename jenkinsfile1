@@ -1,0 +1,43 @@
+@Library ("shared") _
+pipeline {
+
+    agent { label "max" }
+
+    stages {
+
+        stage("Hello") {
+            steps {
+                hello()
+            }
+        }
+
+        stage("Code Clone") {
+            steps {
+                clone("https://github.com/Akash-dev5/Wanderlust-Mega-Project.git","main")
+                    echo "Cloning completed"
+            }
+        }
+
+        stage('Build Docker Images') {
+            steps {
+                script{
+                    dockerBuild()
+                }
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                script{
+                    pushDockerHub()
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                deploy()
+            }
+        }
+    }
+}
