@@ -20,17 +20,13 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                script{
-                    dockerBuild()
-                }
+                dockerBuild()
             }
         }
 
         stage('Push Docker Images') {
             steps {
-                script{
-                    pushDockerHub()
-                }
+                pushDockerHub( "djandocicd-backend","djandocicd-frontend")
             }
         }
 
