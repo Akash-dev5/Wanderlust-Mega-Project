@@ -21,6 +21,7 @@ services:
 
   frontend:
     container_name: frontend
+    image: djangocicd-frontend
     build: ./frontend
     env_file:
       - ./frontend/.env.docker
