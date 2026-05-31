@@ -26,7 +26,7 @@ pipeline {
 
         stage('Push Docker Images') {
             steps {
-                pushDockerHub( "djandocicd-backend","djandocicd-frontend")
+                pushDockerHub( "djangocicd-backend","djangocicd-frontend")
             }
         }
 
