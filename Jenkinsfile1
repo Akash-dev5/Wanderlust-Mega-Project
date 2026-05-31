@@ -1,38 +1,37 @@
 @Library ("shared") _
 pipeline {
-
     agent { label "max" }
-
+    
+    parameters {
+        string(name: 'FRONTEND_DOCKER_TAG', defaultValue: 'latest', description: 'Frontend image tag')
+        string(name: 'BACKEND_DOCKER_TAG', defaultValue: 'latest', description: 'Backend image tag')
+    }
+    
     stages {
-
-        stage("Hello !") {
+        stage("Hello") {
             steps {
                 hello()
             }
         }
-
         stage("Code Clone") {
             steps {
                 clone("https://github.com/Akash-dev5/Wanderlust-Mega-Project.git","main")
-                    echo "Cloning completed"
+                echo "Cloning completed"
             }
         }
-
         stage('Build Docker Images') {
             steps {
-                dockerBuild()
+                dockerBuild("${params.BACKEND_DOCKER_TAG}","${params.FRONTEND_DOCKER_TAG}")
             }
         }
-
         stage('Push Docker Images') {
             steps {
-                pushDockerHub( "djangocicd-backend","djangocicd-frontend")
+                pushDockerHub("djangocicd-backend","djangocicd-frontend","${params.BACKEND_DOCKER_TAG}","${params.FRONTEND_DOCKER_TAG}")
             }
         }
-
         stage('Deploy') {
             steps {
-                deploy()
+                deploy("${params.BACKEND_DOCKER_TAG}","${params.FRONTEND_DOCKER_TAG}")
             }
         }
     }
